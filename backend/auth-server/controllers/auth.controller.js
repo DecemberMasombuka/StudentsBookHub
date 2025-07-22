@@ -1,18 +1,21 @@
 import authDAO from "../dao/auth.DAO.js"
 import dotenv from "dotenv";
 dotenv.config();
+import { getdbPool } from "../../helpers/dbpool.js";
 import bycrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 const JWT_EXPIRATION = '1h';
+const dbPoolName = 'dbPoolAuth';
+
 
 //register
-
 export const register = async (req,res) =>{
 
     try {
-        const dbPoolAuth = req.app.get('dbPoolAuth');
+        //getdbpool
+         const dbPoolAuth  = getdbPool(req,dbPoolName);
        
         const {username,email,password,confirmPassword,phoneNumber,campusLocation} = req.body;
         //validation
@@ -28,13 +31,13 @@ export const register = async (req,res) =>{
         const hashedPassword = await bycrypt.hash(password,salt);
         
         //Query the database
-        const userId = await authDAO.registerDAO(dbPoolAuth,username,email,hashedPassword,phoneNumber,campusLocation);
+        const userInsertId = await authDAO.registerDAO(dbPoolAuth,username,email,hashedPassword,phoneNumber,campusLocation);
         //check for successful insertion
-        if(userId){
+        if(userInsertId){
             
             //create payload and token
             const payload = {
-                userId : userId
+                userId : userInsertId,
             };
 
             const token = jwt.sign(payload,JWT_SECRET_KEY,{expiresIn: JWT_EXPIRATION});
@@ -53,27 +56,28 @@ export const register = async (req,res) =>{
 export const login = async (req,res) =>{
 
     try {
-        const dbPoolAuth = req.app.get('dbPoolAuth'); //get dbpool from app instance
+        //getdbpool
+         const dbPoolAuth  = getdbPool(req,dbPoolName);
         const  {username,password} = req.body;
 
         //validation
         if(!username || !password){ return res.status(400).json({error:"Username/password is required"})};
          
-        const users = await authDAO.loginDAO(dbPoolAuth,username);
-        //console.log(users);
-        if(!users){
+        const user = await authDAO.loginDAO(dbPoolAuth,username);
+        //console.log(user);
+        if(!user){
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
-       const isMatch = await bycrypt.compare(req.body.password,users.password_hash);
+       const isMatch = await bycrypt.compare(req.body.password,user.password_hash);
        if(!isMatch){
         return res.status(401).json({message: 'Invalid credentials'});
        }
        if(isMatch){
 
         const token = jwt.sign({
-            userId : users.insertId,
-            username : users.username
+            userId : user.user_id,
+            username : user.username
         },JWT_SECRET_KEY,{expiresIn: JWT_EXPIRATION});
 
         res.status(201).json({message: "User logged-in successfully",token: token})

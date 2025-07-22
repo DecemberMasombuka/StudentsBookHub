@@ -4,10 +4,10 @@ dotenv.config();
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 //Authentication middleware
 export const authenticateJWT = (req,res,next) =>{
- 
+   
     const authHeader = req.headers['authorization'];
+    
     const token = authHeader &&  authHeader.split(' ')[1];
-
     if(!token){
            return res.send(401);
     }
@@ -17,7 +17,7 @@ export const authenticateJWT = (req,res,next) =>{
                   return res.send(403);
            }
 
-           req.username = username.username; //stores the decoded token(user inform) for later usage
+           req.username = username //stores the decoded token(user inform) for later usage
            console.log(req.username);
            next(); //tells express to move to the next middleware(routes) in the chain
 

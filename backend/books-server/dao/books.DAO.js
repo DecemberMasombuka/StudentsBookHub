@@ -1,3 +1,4 @@
+import { validatedbPool } from "../../helpers/dbpool.js";
 
 
 export default class BooksDAO{
@@ -28,9 +29,7 @@ export default class BooksDAO{
         }
 
         //validate db Pool 
-         if (!dbPoolBooks || typeof dbPoolBooks.query !== 'function') {
-            throw new Error("Database pool not available in BooksDAO.getAllBooksDAO");
-        }
+        validatedbPool(dbPoolBooks);
 
         const [result] = await dbPoolBooks.query(query,params);
         const books = result;
@@ -45,21 +44,36 @@ export default class BooksDAO{
 
 
   //get book by Id
-  static async getBookByID(dbPoolBooks,bookId){
+  static async getBookById(dbPoolBooks,bookId){
     try {
 
         //validate db Pool 
-        if (!dbPoolBooks || typeof dbPoolBooks.query !== 'function') {
-            throw new Error("Database pool not available in BooksDAO.getBookByIdDAO");
-        }
+        validatedbPool(dbPoolBooks);
+       
+        const [result] = await dbPoolBooks.query('SELECT * FROM textbooks WHERE textbook_id = ?',[bookId])
+        const textBook = result[0];
 
-        const [result] = await dbPoolBooks.query('SELECT * FROM campus_textbooks WHERE textbook_id = ?',[bookId])
-
+        return textBook;
 
         
     } catch (error) {
         console.error("Error Fetching a book: ", error);
         throw error;
+    }
+  }
+
+  //get available categories
+  static async getAvailableCategories(dbPoolBooks){
+    try {
+         //validate db Pool 
+        validatedbPool(dbPoolBooks);
+
+        const [result] = await dbPoolBooks.query('SELECT * FROM categories');
+        
+        return result
+    } catch (error) {
+         console.error("Error Fetching available categories ", error);
+         throw error;
     }
   }
 }
