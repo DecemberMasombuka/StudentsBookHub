@@ -76,4 +76,20 @@ export default class BooksDAO{
          throw error;
     }
   }
+
+
+  //add new textbook listing
+  static async addNewBook(dbPoolBooks,sellerId,title,author,isbn,edition,condition_enum,price,description,category_id){
+    try {
+        //validate db Pool 
+        validatedbPool(dbPoolBooks);
+
+         const [result] = await dbPoolBooks.query('CALL insert_textbook(?,?,?,?,?,?,?,?,?)',[sellerId,title,author,isbn,edition,condition_enum,price,description,category_id]);
+      
+        return result.affectedRows > 0
+    } catch (error) {
+         console.error("Error Fetching available categories ", error);
+         throw error;
+    }
+  }
 }

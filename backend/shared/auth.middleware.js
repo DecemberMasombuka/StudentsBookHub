@@ -12,13 +12,13 @@ export const authenticateJWT = (req,res,next) =>{
            return res.send(401);
     }
 
-    jwt.verify(token, JWT_SECRET_KEY, (err, username )=>{
+    jwt.verify(token, JWT_SECRET_KEY, (err, user )=>{
            if(err){
                   return res.send(403);
            }
 
-           req.username = username //stores the decoded token(user inform) for later usage
-           console.log(req.username);
+           req.user = user //stores the decoded token(user inform) for later usage
+           console.log(req.user);
            next(); //tells express to move to the next middleware(routes) in the chain
 
     })

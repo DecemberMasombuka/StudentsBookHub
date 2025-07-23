@@ -1,6 +1,6 @@
 import booksDAO from "../dao/books.DAO.js";
 import { getdbPool } from "../../helpers/dbpool.js";
-import { authorizationCheck } from "../../helpers/input-auth.validation.js";
+import { authorizationCheck, validateData} from "../../helpers/input-auth.validation.js";
 
 const dbPoolName = 'dbPoolBooks';
 export default class BooksController{
@@ -84,14 +84,35 @@ export default class BooksController{
                 //Authorization check
                 authorizationCheck(req,res);
 
-                //Extract Data
+                //get dbpool from the app instance
+                const dbPoolBooks  = getdbPool(req,dbPoolName);
 
+                //Validate nd Extract Data
+                validateData(res,undefined,req.user.userId,req.body.title,req.body.author,req.body.isbn,req.body.edition,req.body.condition_enum,req.body.price,req.body.description,req.body.category_id);
 
+                let sellerId = parseInt(req.user.userId);
+
+                let {title,author,isbn,edition,condition_enum,price,description,category_id} = req.body;
                 
+                //call DAO to add task
+                const newBook = await booksDAO.addNewBook(dbPoolBooks,sellerId,title,author,isbn,edition,condition_enum,parseFloat(price),description,parseInt(category_id));
+                
+                 if(newBook){
+                    return res.status(201).json({ 
+                        status: "Success",
+                        message: "Textbook listing was successful",
+                        //insertedId: newBook.insertId
+                    });
+                } 
+                else {
+                    
+                    return res.status(500).json({ error: "Textbook could not be added" });
+                }
+
                 
            } catch (error) {
-            console.error(`Error adding textbook:  ${error}`);
-            res.status(500).json({error : error.message || "Server error during adding textbook"})
+            console.error(`Error adding textbook listing:  ${error}`);
+            res.status(500).json({error : error.message || "Server error during adding textbook listing"})
            }
     }
 
