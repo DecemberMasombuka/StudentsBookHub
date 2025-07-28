@@ -13,5 +13,8 @@ router.route('/:id').get(booksCtrl.apiGetBook);
 
 //Protected Texbook Routes
 router.route('/textbooks').post(authenticateJWT,booksCtrl.apiAddBook)
+router.route('/textbooks/:id').put(authenticateJWT,booksCtrl.apiUpdateBook)
+router.route('/textbooks/:id').delete(authenticateJWT,booksCtrl.apiDeleteBook)
+router.route('/users/:userId/textbooks').get(authenticateJWT,booksCtrl.apiGetAllBooks)
 
 export default router;
