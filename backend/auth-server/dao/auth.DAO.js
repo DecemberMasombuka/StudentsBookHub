@@ -34,7 +34,7 @@ export default class AuthDAO{
           //validate db Pool 
            validatedbPool(dbPoolAuth);
 
-            const [result] = await dbPoolAuth.query('SELECT * FROM users WHERE username = ?',[username]);
+            const [result] = await dbPoolAuth.query('SELECT * FROM users WHERE username = ?',[String(username)]);
             const user = result[0]; //get the first object from the returned array of objects
             return user;
 

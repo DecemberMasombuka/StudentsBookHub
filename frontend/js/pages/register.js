@@ -1,5 +1,6 @@
 import { registerUser } from "../api.js";
 import { saveToken } from "../auth.js";
+import { displayMessage } from "../utils.js";
 
 /**
  * gets an element by id and listens to any action
@@ -16,19 +17,21 @@ document.getElementById('js-registration-form').addEventListener('submit',async(
   const phoneNumber = document.getElementById('js-phoneNumber-input').value;
   const campusLocation = document.getElementById('js-campusLocation-input').value;
 
+  const messageBoxElement =document.getElementById('js-message-box');
+
+  //clear previous message
+  displayMessage(messageBoxElement,'');
+
 
   try {
                 const token = await registerUser({username,email,password,confirmPassword,phoneNumber,campusLocation});
-
+                displayMessage(messageBoxElement,token.message);
                 saveToken(token);
 
                 console.log(`Registration successful!`);
                 //window.location.href = '/textbooks.js'
   } catch (error) {
     console.error(`Registration failed:` ,error.message);
-    const errorMessageDiv = document.getElementById('js-message-box');
-    if(errorMessageDiv){
-        errorMessageDiv.textContent = error.message;
-    }
+   displayMessage(messageBoxElement,error.message,true);
   }
 })

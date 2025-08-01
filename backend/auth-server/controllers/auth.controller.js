@@ -42,7 +42,7 @@ export const register = async (req,res) =>{
 
             const token = jwt.sign(payload,JWT_SECRET_KEY,{expiresIn: JWT_EXPIRATION});
 
-            res.status(201).json({message: "User registered successfully",token: token})
+            res.status(201).json({message: "Registration successful!",token: token})
         }
 
     } catch (error) {
@@ -80,7 +80,7 @@ export const login = async (req,res) =>{
             username : user.username
         },JWT_SECRET_KEY,{expiresIn: JWT_EXPIRATION});
 
-        res.status(201).json({message: "User logged-in successfully",token: token})
+        res.status(201).json({message: "Login successful!",token: token})
        }
 
 
