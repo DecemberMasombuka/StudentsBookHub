@@ -1,13 +1,14 @@
-const API_URL= {
+const API_Endpoints= {
     registration :'http://localhost:5000/api/v1/auth/register',
     login : 'http://localhost:5000/api/v1/auth/login',
     getAllBooks : 'http://localhost:3000/api/v1/bookshub/textbooks',
-    //getAllBooksSearch : "http://localhost:3000/api/v1/bookshub/textbooks?title=Cal&category=Mathematics"
+    getCategories: 'http://localhost:3000/api/v1/bookshub/categories'
 };
                                     
 export  const registerUser = async (userData) =>{
    
-    const response = await fetch(`${API_URL.registration}`,{
+
+    const response = await fetch(`${API_Endpoints.registration}`,{
     method:"POST",
     headers: {'Content-Type' : 'application/json'},
     body: JSON.stringify(userData)
@@ -25,7 +26,7 @@ export  const registerUser = async (userData) =>{
 export const loginUser = async (userData) =>{
 
     console.log(userData);
-    const response = await fetch(`${API_URL.login}`,{
+    const response = await fetch(`${API_Endpoints.login}`,{
         method: 'POST',
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify(userData)
@@ -47,7 +48,7 @@ export const getAllTextBooks = async (filters = {})=>{
         if(filters.category){params.append('category',filters.category)};
 
         const queryString = params.toString() //serializes parameters back to string(title=''&category='')
-        const url = queryString ? `${API_URL.getAllBooks}?${queryString}` : API_URL.getAllBooks;
+        const url = queryString ? `${API_Endpoints.getAllBooks}?${queryString}` : API_Endpoints.getAllBooks;
 
         const response = await fetch(url,{
             method:'GET',
@@ -59,11 +60,30 @@ export const getAllTextBooks = async (filters = {})=>{
         if(!response.ok){
             throw new Error(data.error || 'Get All Textbooks Failed')
         }
-        console.log(data);
         return data;
 
 
     } catch (err) {
         throw new Error(err.message || 'Unexpected error in fetching textbooks');
+    }
+}
+
+export const getCategories = async () =>{
+
+    
+    try {
+        const response = await fetch(API_Endpoints.getCategories,{
+            method: 'GET',
+            headers:{'Content-Type' : 'Application/json'}
+        });
+
+        const data = await response.json();
+        if(!response.ok){
+            throw new Error(data.error || 'Get Categories Failed');
+        }
+
+        return data;
+    } catch (err) {
+        throw new Error(err.message || 'Unexpected error in fetching categories'); 
     }
 }

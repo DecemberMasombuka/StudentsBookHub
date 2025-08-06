@@ -7,12 +7,36 @@
 </head>
 <body>
     <header>
+       
+    </header class = "header">
+    <div class="header_nav">
+         <ul class="header__ul">
+             <li><a href="#">Home</a></li>
+             <li><a href="#">Login</a></li>
+             <li><a href="#">Register</a></li>
+         </ul>
 
-    </header>
+         <div class="header__filter">
+            <form role="search" class="header__search__form" id="js-filter_form">
+                <label for="js-query-input" class="header__search_label">Search by book title</label>
+                  <input type="search" id="js-query-input" name="queryname" placeholder="search...">
 
-    <main>
+                <label for="js-category-input">Category</label>
+                  <select name="category" id="js-category-input">
+
+                  </select>
+            <div class="js-message-box" id="js-message-box"></div>
+            </form>
+
+         </div>
+
+         <button id="js-reset-filters">Reset Filters</button>
+
+    </div>
+
+    <main class = "home__main" id='main'>
         <div>
-            
+
         </div>
     </main>
     
