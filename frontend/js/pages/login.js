@@ -2,6 +2,7 @@ import { loginUser } from "../api.js";
 import { saveToken} from "../auth.js";
 import { displayMessage } from "../utils.js";
 
+
 document.getElementById('js-login-form').addEventListener('submit', async (event) =>{
     event.preventDefault();
 
@@ -15,11 +16,15 @@ document.getElementById('js-login-form').addEventListener('submit', async (event
 
     try {
 
-        const token = await loginUser({username,password});
-        displayMessage(messageBoxElement,token.message);
-        saveToken(token);
-        //window.location.href = '/textbooks.js';
-      
+        const data = await loginUser({username,password});
+    
+        displayMessage(messageBoxElement,data.message);
+        saveToken(data.token);
+        
+        
+
+        location.replace('../pages/textbooks.html');
+
 
     } catch (error) {
    //console.error(`Registration failed:` ,error.message);

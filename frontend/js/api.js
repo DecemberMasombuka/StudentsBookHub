@@ -25,7 +25,6 @@ export  const registerUser = async (userData) =>{
 
 export const loginUser = async (userData) =>{
 
-    console.log(userData);
     const response = await fetch(`${API_Endpoints.login}`,{
         method: 'POST',
         headers: {'Content-Type' : 'application/json'},

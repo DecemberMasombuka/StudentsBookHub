@@ -7,13 +7,14 @@
 </head>
 <body>
     <header>
-       
+        <h2 id="js-header_h2" class="header_h2">Welcome to Student Books Hub!</h2>
     </header class = "header">
     <div class="header_nav">
          <ul class="header__ul">
              <li><a href="#">Home</a></li>
-             <li><a href="#">Login</a></li>
-             <li><a href="#">Register</a></li>
+             <li ><a id="js-login-mylisting-nav" href="login.html">Login</a></li>
+             <li id="js-register-nav" ><a href="./register.html">Register</a></li>
+             <li id="js-logout-button" class="header__ul_button"><button>Logout</button></li>
          </ul>
 
          <div class="header__filter">
@@ -41,6 +42,9 @@
     </main>
     
 </body>
+     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@latest/build/jwt-decode.min.js"></script>
      <script type="module" src="../js/api.js"></script>
      <script type="module" src="../js/pages/textbooks.js"></script>
+     <script type="module" src="../js/pages/logout.js"></script>
+
 </html>

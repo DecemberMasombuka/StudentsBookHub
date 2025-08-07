@@ -6,6 +6,7 @@ const TOKEN_KEY = 'authoken';
  */
 export function saveToken(token){
     if(token){
+
         localStorage.setItem(TOKEN_KEY,token);
     }
 };
@@ -21,8 +22,10 @@ export function getToken(){
 };
 
 
+
+
 //deletes JWT from local storage when a user logs out
-export function removeTokne(){
+export function removeToken(){
     localStorage.removeItem(TOKEN_KEY);
 };
 

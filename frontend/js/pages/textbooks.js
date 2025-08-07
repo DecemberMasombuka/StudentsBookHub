@@ -1,10 +1,19 @@
 import { getAllTextBooks } from "../api.js";
 import { getCategories } from "../api.js";
-import { displayMessage } from "../utils.js";
+import { isAuthenticated ,getToken } from "../auth.js";
+import { displayMessage ,decodeToken} from "../utils.js";
 
 const main = document.getElementById('main');
 const categoryFilter = document.getElementById('js-category-input');
 const searchFilter =document.getElementById('js-query-input');
+
+const loginOrMylisting = document.getElementById('js-login-mylisting-nav');
+const registerNav = document.getElementById('js-register-nav');
+const logoutButton = document.getElementById('js-logout-button');
+
+
+const welcomeMessage = document.getElementById('js-header_h2');
+
 
 const filters= {title:'',category:''};
 
@@ -133,3 +142,25 @@ document.getElementById('js-reset-filters').addEventListener('click', () => {
     displayTextbooks(filters);
 });
 
+
+document.addEventListener("DOMContentLoaded", function() {
+
+  //if user is authenticated, then hide/show certain nav bar elements(login,register,logout);
+    if(isAuthenticated()){
+
+        loginOrMylisting.textContent= "My Listings";
+        loginOrMylisting.href = "#"
+
+        registerNav.style.display = "none";
+
+        welcomeMessage.textContent = `Hi ${decodeToken().username},  Welcome to Student Books Hub!`
+    }else{
+
+        loginOrMylisting.textContent= "Login";
+        loginOrMylisting.href = "./login.html";
+
+        logoutButton.style.display = "none";
+
+        registerNav.style.display = "js-register-nav";  
+    }
+});

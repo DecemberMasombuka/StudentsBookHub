@@ -24,12 +24,13 @@ document.getElementById('js-registration-form').addEventListener('submit',async(
 
 
   try {
-                const token = await registerUser({username,email,password,confirmPassword,phoneNumber,campusLocation});
-                displayMessage(messageBoxElement,token.message);
-                saveToken(token);
+                const data = await registerUser({username,email,password,confirmPassword,phoneNumber,campusLocation});
+                displayMessage(messageBoxElement,data.token.message);
+                saveToken(data.token);
 
-                console.log(`Registration successful!`);
-                //window.location.href = '/textbooks.js'
+                
+                location.replace('../pages/textbooks.html'); 
+               
   } catch (error) {
     console.error(`Registration failed:` ,error.message);
    displayMessage(messageBoxElement,error.message,true);
