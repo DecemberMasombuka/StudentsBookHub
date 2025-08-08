@@ -2,7 +2,8 @@ const API_Endpoints= {
     registration :'http://localhost:5000/api/v1/auth/register',
     login : 'http://localhost:5000/api/v1/auth/login',
     getAllBooks : 'http://localhost:3000/api/v1/bookshub/textbooks',
-    getCategories: 'http://localhost:3000/api/v1/bookshub/categories'
+    getCategories: 'http://localhost:3000/api/v1/bookshub/categories',
+    getAllUserListings: (userId) => `http://localhost:3000/api/v1/bookshub/users/${userId}/textbooks`
 };
                                     
 export  const registerUser = async (userData) =>{
@@ -48,6 +49,7 @@ export const getAllTextBooks = async (filters = {})=>{
 
         const queryString = params.toString() //serializes parameters back to string(title=''&category='')
         const url = queryString ? `${API_Endpoints.getAllBooks}?${queryString}` : API_Endpoints.getAllBooks;
+         
 
         const response = await fetch(url,{
             method:'GET',
@@ -85,4 +87,27 @@ export const getCategories = async () =>{
     } catch (err) {
         throw new Error(err.message || 'Unexpected error in fetching categories'); 
     }
+}
+
+export const getAllUserListings =  async (userId,token) =>{
+          try {
+
+            const response = await fetch(`${API_Endpoints.getAllUserListings(userId)}`,{
+                method: 'GET',
+                headers: {'Content-Type' : 'Application/json',
+                           'Authorization' : `Bearer ${token}` 
+                         }
+            });
+
+            const data = await response.json();
+
+            if(!response.ok){
+                throw new Error(data.error || 'Get Book Listings Failed');
+            } 
+
+            return data
+            
+          } catch (err) {
+            throw new Error(err.message || 'Unexpected error in fetching textbooks')
+          }
 }

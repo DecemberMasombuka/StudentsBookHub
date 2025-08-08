@@ -174,6 +174,7 @@ export default class BooksDAO{
 
       const [result] = await dbPoolBooks.query(`SELECT * FROM textbooks WHERE seller_id = ? `,[userId]);
       const books = result;
+      
       return books;
     } catch (error) {
       console.error("Error Getting all user textbooks listings ", error);

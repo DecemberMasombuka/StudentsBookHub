@@ -64,8 +64,6 @@ export default class BooksController{
                 return
             }
 
-            console.log(availableCategories);
-
             res.json(availableCategories);
               
              
@@ -223,10 +221,10 @@ export default class BooksController{
 
     //Get all  user Textbooks Listings
     static async apiGetAllBooks(req,res){
+       
         try {
              //Authorization check
              authorizationCheck(req,res);
-
              //get dbpool from the app instance
              const dbPoolBooks  = getdbPool(req,dbPoolName);
 
@@ -242,7 +240,7 @@ export default class BooksController{
                 res.status(404).json({error:"User has no permision to view textbooks listings!"});
                 return
             }
-            console.log(`userID ${userId}`); 
+             
             
             const userTextBookListings = await booksDAO.getUserBooksDAO(dbPoolBooks,userId);
 
@@ -255,7 +253,7 @@ export default class BooksController{
             
         } catch (error) {
             console.error(`Error getting  user textbooks listings:  ${error}`);
-            res.status(500).json({error : error.message || "Server error during getiing user textbooks listings"}) 
+            res.status(500).json({error : error.message || "Server error during getTing user textbooks listings"}) 
         }
     }
 
