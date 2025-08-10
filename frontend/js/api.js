@@ -3,7 +3,8 @@ const API_Endpoints= {
     login : 'http://localhost:5000/api/v1/auth/login',
     getAllBooks : 'http://localhost:3000/api/v1/bookshub/textbooks',
     getCategories: 'http://localhost:3000/api/v1/bookshub/categories',
-    getAllUserListings: (userId) => `http://localhost:3000/api/v1/bookshub/users/${userId}/textbooks`
+    getUserListings: (userId) => `http://localhost:3000/api/v1/bookshub/users/${userId}/textbooks`,
+    deleteTextBook: (bookId) => `http://localhost:3000/api/v1/bookshub/textbooks/${bookId}`
 };
                                     
 export  const registerUser = async (userData) =>{
@@ -92,7 +93,7 @@ export const getCategories = async () =>{
 export const getAllUserListings =  async (userId,token) =>{
           try {
 
-            const response = await fetch(`${API_Endpoints.getAllUserListings(userId)}`,{
+            const response = await fetch(`${API_Endpoints.getUserListings(userId)}`,{
                 method: 'GET',
                 headers: {'Content-Type' : 'Application/json',
                            'Authorization' : `Bearer ${token}` 
@@ -110,4 +111,25 @@ export const getAllUserListings =  async (userId,token) =>{
           } catch (err) {
             throw new Error(err.message || 'Unexpected error in fetching textbooks')
           }
+}
+
+export const deleteBookListing = async (bookId,token) =>{
+    try {
+        const response = await fetch(API_Endpoints.deleteTextBook(bookId),{
+            method : 'DELETE',
+            headers : {'Content-Type' : 'Application/json',
+                       'Authorization' : `Bearer ${token}`
+            },
+        })
+
+        const data = await response.json();
+        if(!response.ok){
+            throw new Error(data.error || 'Delete Book Listings Failed');
+        } 
+
+        return data
+        
+    } catch (err) {
+        throw new Error(err.message || 'Unexpected error in deleting textbook listing')
+    }
 }

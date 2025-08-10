@@ -1,22 +1,26 @@
 import {getToken } from "../auth.js";
 import {displayMessage,decodeToken} from "../utils.js";
-import { getAllUserListings } from "../api.js";
+import { getAllUserListings,deleteBookListing } from "../api.js";
 
 const main = document.getElementById('main');
 
-
+/**
+ * fetches all user/seller textbooks from the server and displays them
+ * called when  dashboard page loads.
+ * @param {int} userId || null
+ * 
+ */
 async function displayUserListings(main){
 
     try {
         
         main.innerHTML = '';
         const books = await getAllUserListings(decodeToken().userId,getToken());
-        
 
         books.forEach(book => {
             const divCard = document.createElement('div');
             divCard.setAttribute('class', 'card');
-
+            divCard.style.border = '2px solid red';
             const thumb = document.createElement('img');
             thumb.setAttribute('class', 'img');
             thumb.setAttribute('width', '150px');
@@ -38,11 +42,22 @@ async function displayUserListings(main){
             condition.setAttribute('class', 'condition');
             condition.innerHTML = `Condition: ${book.condition_enum}`;
 
-            const category = document.createElement('h4');
-            category.setAttribute('class', 'category');
-            category.innerHTML = `Category: ${book.category_name}`;
+            const divButton = document.createElement('div');
+            divButton.setAttribute('class','divButton');
+            divButton.style.border = '2px solid blue';
 
-            divCard.append(thumb, title, author, price, condition, category);
+            const editButton = document.createElement('button');
+            editButton.setAttribute('class','editButton');
+            
+            editButton.textContent = `🖋️`;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.setAttribute('class', 'deleteButton');
+            deleteButton.textContent = `🗑️`;
+            
+            
+            divButton.append(editButton,deleteButton);
+            divCard.append(thumb, title, author, price, condition,divButton);
             main.appendChild(divCard);
         });
 
@@ -53,5 +68,18 @@ async function displayUserListings(main){
     }
 }
 
-
 displayUserListings(main);
+
+main.addEventListener('click', (event) =>{
+    const target = event.target;
+    console.log(target.classList);
+    if(target.classList.contains('editButton')){
+        
+    }
+})
+
+
+
+
+
+
