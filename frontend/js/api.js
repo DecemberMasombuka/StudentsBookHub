@@ -3,6 +3,7 @@ const API_Endpoints= {
     login : 'http://localhost:5000/api/v1/auth/login',
     getAllBooks : 'http://localhost:3000/api/v1/bookshub/textbooks',
     getCategories: 'http://localhost:3000/api/v1/bookshub/categories',
+    addNewTextbook: 'http://localhost:3000/api/v1/bookshub/textbooks',
     getUserListings: (userId) => `http://localhost:3000/api/v1/bookshub/users/${userId}/textbooks`,
     deleteTextBook: (bookId) => `http://localhost:3000/api/v1/bookshub/textbooks/${bookId}`
 };
@@ -111,6 +112,27 @@ export const getAllUserListings =  async (userId,token) =>{
           } catch (err) {
             throw new Error(err.message || 'Unexpected error in fetching textbooks')
           }
+};
+
+export const addNewTextbook = async (token, body = {}) =>{
+    try {
+          const response = await fetch (`${API_Endpoints.addNewTextbook}`,{
+            method : 'POST',
+            headers :{'Content-Type' : 'Application/json', 
+                      'Authorization' : `Bearer : ${token}`
+                     },
+            body : JSON.stringify(body)
+          });
+
+          const data = await response.json();
+          if(!response.ok){
+            throw new Error(data.error || 'Get Book Listings Failed');
+          }
+          return data
+
+    } catch (error) {
+        throw new Error(err.message || 'Unexpected error in adding textbook')
+    }
 }
 
 export const deleteBookListing = async (bookId,token) =>{

@@ -6,7 +6,9 @@ const main = document.getElementById('main');
 const categoryFilter = document.getElementById('js-category-input');
 const searchFilter =document.getElementById('js-query-input');
 
-const loginOrMylisting = document.getElementById('js-login-mylisting-nav');
+
+const myListingNav = document.getElementById('js-mylisting-nav');
+const loginNav = document.getElementById('js-login-nav');
 const registerNav = document.getElementById('js-register-nav');
 const logoutButton = document.getElementById('js-logout-button');
 
@@ -50,24 +52,28 @@ document.getElementById('js-reset-filters').addEventListener('click', () => {
 });
 
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
 
   //if user is authenticated, then hide/show certain nav bar elements(login,register,logout);
     if(isAuthenticated()){
+        myListingNav.style.display = 'js-mylisting-nav';
 
-        loginOrMylisting.textContent= "My Listings";
-        loginOrMylisting.href = "./dashboard.html"
+        myListingNav.addEventListener('click', ()=>{
+            location.replace('../pages/dashboard.html');
+        })
 
+        loginNav.style.display = "none";
         registerNav.style.display = "none";
 
         welcomeMessage.textContent = `Hi ${decodeToken().username},  Welcome to Student Books Hub!`
     }else{
 
-        loginOrMylisting.textContent= "Login";
-        loginOrMylisting.href = "./login.html";
+        myListingNav.style.display = 'none';
 
         logoutButton.style.display = "none";
-
+        loginNav.style.display = "js-login-nav";
         registerNav.style.display = "js-register-nav";  
     }
 });

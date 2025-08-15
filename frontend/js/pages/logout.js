@@ -10,4 +10,5 @@ document.getElementById('js-logout-button').addEventListener('click',() =>{
         location.reload();
     }
     
+    
 })
