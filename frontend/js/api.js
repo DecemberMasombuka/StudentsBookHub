@@ -115,11 +115,12 @@ export const getAllUserListings =  async (userId,token) =>{
 };
 
 export const addNewTextbook = async (token, body = {}) =>{
+    console.log(body);
     try {
           const response = await fetch (`${API_Endpoints.addNewTextbook}`,{
             method : 'POST',
             headers :{'Content-Type' : 'Application/json', 
-                      'Authorization' : `Bearer : ${token}`
+                      'Authorization' : `Bearer ${token}`
                      },
             body : JSON.stringify(body)
           });
@@ -128,9 +129,11 @@ export const addNewTextbook = async (token, body = {}) =>{
           if(!response.ok){
             throw new Error(data.error || 'Get Book Listings Failed');
           }
+
+          console.log(data);
           return data
 
-    } catch (error) {
+    } catch (err) {
         throw new Error(err.message || 'Unexpected error in adding textbook')
     }
 }

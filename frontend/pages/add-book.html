@@ -18,24 +18,70 @@
 
          <div class="header__filter">
             <form role="search" class="header__add-book__form" id="js-add-book_form">
-                <label for="js-title-input" class="header__title_label">Book Title </label>
-                  <input type="text" id="js-title-input" name="title-name" placeholder="Enter book title">
+              <div>
+                <label for="js-title-input" class="header__title_label">Title</label>
+                  <input type="text" id="js-title-input" name="title" placeholder="Enter book title" required>
+              </div>
 
+              <div>
 
-                <label for="js-author-input" class="header__author_label">Book Author </label>
-                  <input type="text" id="js-author-input" name="author-name" placeholder="Enter book author name">
+                <label for="js-author-input" class="header__author_label">Author</label>
+                  <input type="text" id="js-author-input" name="author" placeholder="Enter book author name" required>
+              </div>
+              
+              <div>
+                <label for="js-isbn-input" class="header__add-book_label"> ISBN</label>
+                  <input type="text" id="js-isbn-input" name="isbn" max="20" placeholder="Enter book isbn" required>
+              </div>
                   
-                <label for="js-title-input" class="header__add-book_label">Book Title </label>
-                  <input type="text" id="js-title-input" name="title-name" placeholder="Enter book title">
-                <label for="js-title-input" class="header__add-book_label">Book Title </label>
-                  <input type="text" id="js-title-input" name="title-name" placeholder="Enter book title">
-                <label for="js-title-input" class="header__add-book_label">Book Title </label>
-                  <input type="text" id="js-title-input" name="title-name" placeholder="Enter book title">
+              <div>
+                <label for="js-edition-input" class="header__add-book_label">Edition</label>
+                  <input type="text" id="js-edition-input" name="edition" placeholder="Enter book  edition" required>
+              </div>
+              
+              <div>
+                <label for="js-condition-input" class="header__add-book_label">Condition </label>
+                  <select name="condition-name" id="js-condition-input"  required>
+                    <option value="" disabled selected>Select condition</option>
+                    <option value="New">New</option>
+                    <option value="Good">Good</option>
+                    <option value="Fair">Fair</option>
+                    <option value="Poor">Poor</option>
+                 </select>
+              </div>
+
+              <div>
+                <label for="js-price-input" class="header__add-book_label">Price (R)</label>
+                  <input type="number" id="js-price-input" name="condition" step="0.01"  min="0" placeholder="Enter book price" required>
+              </div>
+              
+              <div>
+                <label for="js-description-input" class="header__add-book_label">Description</label>
+                  <input type="text" id="js-description-input" name="condition" placeholder="Enter book description" required>
+              </div>
+
+              <div>
+                <label for="js-category-input" class="header__add-book_label">Category</label>
+                <select name="category" id="js-category-input" required>
+                  <option value="" disabled selected>Select category</option>
+                </select> 
+                
+              </div>
+
+              <div>
+                <label for="js-image-input" class="header__add-book_label">Image</label>
+                <input type="file" id="js-image-input" name="image" >
+              </div>
+
+              <div>
+                <button type="submit" class="header_submit-book" id="js-submit-book-button">Add Book</button>
+              </div>
+              
 
             </form>
 
          </div>
-         <div class="js-message-box" id="js-message-box"></div>
+         <div class="message-box" id="js-message-box"></div>
     </div>
 
     <main class = "home__main" id='main'>
@@ -47,7 +93,7 @@
 </body>
      <script src="https://cdn.jsdelivr.net/npm/jwt-decode@latest/build/jwt-decode.min.js"></script>
      <script type="module" src="../js/api.js"></script>
-     <script type="module" src="../js/pages/textbooks.js"></script>
-     <script type="module" src="../js/pages/logout.js"></script>
+     <script type="module" src="../js/pages/add-book.js"></script>
+     <!-- <script type="module" src="../js/pages/logout.js"></script> -->
 
 </html>

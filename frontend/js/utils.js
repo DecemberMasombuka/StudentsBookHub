@@ -10,7 +10,6 @@ export function displayMessage(messageBoxElement,message,isError = false){
 
 
 export function decodeToken(){
- console.log('Running')
  if(getToken()) {
 
     return jwt_decode(getToken())
@@ -96,9 +95,11 @@ export const displayTextbooks = async (filters,mainElement) => {
 export const categoriesData = async(categoryFilter) =>{
     try {
         const categories  = await getCategories();
-        categories.forEach(item =>{
+        //<option value="" disabled selected>Select condition</option>
+
+     categories.forEach(item =>{
           const option = document.createElement('option');
-          option.value = item.category_name;
+          option.value = item.category_id;
           option.textContent = item.category_name;
           categoryFilter.appendChild(option);
         })
@@ -109,4 +110,56 @@ export const categoriesData = async(categoryFilter) =>{
         const messageBoxElement = document.getElementById('js-message-box');
         displayMessage(messageBoxElement, error.message, true); 
     }
+};
+
+
+/**
+ * validates ISBN inputs
+ * user submits a new textbook listing(click on submit button )
+ * @param {string} ISBN 
+ */
+
+export const isValidISBN = (isbn)=>{
+    //cleane the input(remove - and spaces in the whole string)
+    const cleanIsbn = isbn.replace(/[-\s]/g,'')
+   
+    //check if it's ISBN-10
+    if(/^\d{9}[\dX]$/.test(cleanIsbn)){
+
+        let sum = 0;
+        for(let i = 0 ; i < 10 ; i++){
+            //if the last character is X,then treat it as 10
+            let digit = cleanIsbn[i] === 'X' ? 10 : parseInt(cleanIsbn[i]);
+            
+            
+            //multiply each digit by a decreasing weight (from 10 -> 1) and add everything up
+            
+            sum += digit * (10 - i);
+        }
+
+       
+
+        return sum % 11 === 0  //if the total is divisible by 11, the ISBN is valid(0-306-40615-2)
+
+    }  
+     //check if it's ISBN-13 (978-3-16-148410-0)
+
+     else if(/^\d{13}$/.test(cleanIsbn)){
+
+        let sum = 0;
+        for(let i = 0 ; i < 13 ; i++){
+            
+            let digit =  parseInt(cleanIsbn[i]);
+            
+            //multiply digits alternately by 1 and 3 (index : 1x,3x,1x,3x,1x....)
+
+            sum += i % 2 === 0 ? digit : digit * 3 ;
+        }
+
+        return sum % 10 === 0 ;
+    } else{
+        return false;
+        
+    }
+
 }
